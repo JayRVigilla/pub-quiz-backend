@@ -14,20 +14,20 @@ const app = require('../app')
 
 describe("GET /token/new", () => {
   test("GETs session token from external API", async () => {
-    const res = await request(app)
+    const resp = await request(app)
       .get('/trivia/token/new')
 
-      expect(typeof res.body.token).toBe("string")
-      expect(res.statusCode).toEqual(200)
+      expect(typeof resp.body.token).toBe("string")
+      expect(resp.statusCode).toEqual(200)
       })
 }),
 
 describe("GET /categories", () => {
   test("GETs array of categories from external API", async () => {
-    const res = await request(app)
-      .get('/categories')
-    // console.log('*****  ', res)
-    expect(res.statusCode).toEqual(200)
-      // expect(typeof res.body.categories).toBe("object")
+    const resp = await request(app)
+      .get('trivia/categories')
+    // console.log('*****  ', resp.error)
+      expect(resp.statusCode).toEqual(200)
+      expect(typeof resp.body.categories).toBe("object")
       })
   })
