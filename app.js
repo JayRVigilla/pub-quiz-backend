@@ -22,13 +22,12 @@ app.use(express.json());
 // add logging system
 app.use(morgan('tiny'));
 
-app.use('/music', musicRoutes);
-app.use('/quotes', quotesRoutes);
-app.use('./thesaurus', thesaurusRoutes);
-app.use('./trivia', triviaRoutes);
+// app.use('/music', musicRoutes);
+// app.use('/quotes', quotesRoutes);
+// app.use('/thesaurus', thesaurusRoutes);
+app.use('/trivia', triviaRoutes);
 
 /** 404 handler */
-
 app.use(function (req, res, next) {
   const err = new ExpressError("Not Found", 404);
   // pass the error to the next piece of middleware
