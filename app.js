@@ -1,37 +1,50 @@
 /**
- * routes for triva
- *
- * https://opentdb.com/api_config.php
- *  OR
- * https://jservice.io/
+ * Express app for pub-quiz
  */
 
+const express = require('express');
 
-/**
- * routes for song guessing
- *
- * uses apple music api
- *  https://developer.apple.com/documentation/applemusicapi/
- */
+const ExpressError = ('./helpers/ExpressError');
 
+const musicRoutes = require('./routes/music')
+const quotesRoutes = require('./routes/quotes')
+const thesaurusRoutes = require('./routes/thesaurus')
+const triviaRoutes = require('./routes/trivia')
 
- /**
-  * thesaurus route
-  *
-  * uses one fo these
-  * https://rapidapi.com/collection/thesaurus-apis
-  *
-  * when guessing a mystery topic, use thesaurus to get synonyms for answers, both correct and incorrect
-  *
-  */
+const morgan = require('morgan');
 
+const app = express();
 
-  /**
-   *
-   * Quote API
-   *
-   * https://rapidapi.com/collection/quote-generator-apis
-   *
-   *
-   *
-   */
+// Middleware
+// recognize incoming request object as JSON
+app.use(express.json());
+
+// add logging system
+app.use(morgan('tiny'));
+
+app.use('/music', musicRoutes);
+app.use('/quotes', quotesRoutes);
+app.use('./thesaurus', thesaurusRoutes);
+app.use('./trivia', triviaRoutes);
+
+/** 404 handler */
+
+app.use(function (req, res, next) {
+  const err = new ExpressError("Not Found", 404);
+  // pass the error to the next piece of middleware
+  return next(err);
+});
+
+/** general error handler */
+
+app.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  console.error(err.stack);
+
+  return res.json({
+    status: err.status,
+    message: err.message
+  });
+});
+
+module.exports = app

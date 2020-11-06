@@ -1,4 +1,4 @@
-/** Start server for jobly. */
+/** Start server for pub-quiz. */
 
 const app = require("./app");
 const { PORT } = require("./config.js");
