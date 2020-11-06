@@ -1,5 +1,7 @@
-We've all been couped up for months this year thanks to COVID-19.
-One of the things I miss is going to pub quiz nights. SO I'm working on the backend of a pub quiz app.
+# PUB QUIZ
+
+We've all been cooped up for months this year thanks to COVID-19.
+One of the things I miss is going to pub quiz nights. SO I'm working on the backend of a pub quiz app. The eventual frontend will be a React app (maybe Native?).
 
 
 Designing API around being able to run a game like this:
@@ -7,7 +9,7 @@ Designing API around being able to run a game like this:
   Premise
 
     - Game play is for 2 teams
-    - Teams can log in to same game anywhere (like you don't know jack)
+    - Teams can log in to same game anywhere (like You Don't Know Jack)
       - given a team token to join a team
     - scores kept for each team
 

@@ -28,29 +28,48 @@ Code 3: Token Not Found Session Token does not exist.
 Code 4: Token Empty Session Token has returned all possible questions for the specified query. Resetting the Token is necessary.
  */
 
+function readResponseCode(int) {
+  const codes = {
+    0: ['Success! Returned results successfully.', 200],
+    1: ["No Results! Could not return results. The API doesn't have enough questions for your query. (Ex. Asking for 50 Questions in a Category that only has 20.)", 400],
+    2: ["Invalid Parameter! Contains an invalid parameter. Arguments passed in aren't valid. (Ex. Amount = Five)", 400],
+    3: ["Token Not Found! Session Token does not exist.", 400],
+    4: ["Token Empty Session! Token has returned all possible questions for the specified query. Resetting the Token is necessary.", 418],  // shouldn't happen.
+  }
+  if (int !== 0) return next(...codes.int)
+}
+
 /**
  *  GET token
  *  gets session token to ensure no repeated questions are fetched
  *  tokens last for six hours
  *  tokens get appended to query string
  *    example: https://opentdb.com/api.php?amount=10&token=YOURTOKENHERE
+ * () => {token: string}
 */
 router.get(`/token/new`,
   async function (req, res, next) {
     try {
       const resp = await axios.get(`${BASE_URL}/api_token.php?command=request`);
+      readResponseCode(resp.response_code)
       const token = resp.token
       return res.json({ token });
     } catch (err) {
       return next(err)}
             })
 
-
-// GET list of Categories
+/**
+ *
+ * GET list of Categories
+ * () => {
+ *        categories: [ {id, name},...,{} ]
+ *        }
+ */
 router.get('/categories',
   async function (req, res, next) {
     try {
       const resp = await axios.get(`${BASE_URL}/api_category.php`);
+      readResponseCode(resp.response_code)
       const categories = resp.trivia_categories;
       return res.json({ categories });
     } catch (err) {
@@ -58,29 +77,31 @@ router.get('/categories',
   })
 
 
-// Get Questions from a category
-router.get(,
+/**
+ * Get Questions matching qString
+ * () => {questions:[
+ *                     {
+ *                      category: str,
+ *                      type: str,
+ *                      difficulty: str,
+ *                      question: str,
+ *                      correct_answer: str,
+ *                      incorrect_answers: [str,str,str]
+ *                     },
+ *                     ... ,
+ *                     {}]
+ */
+router.get('/questions',
   async function (req, res, next) {
     try {
       let qString = ""
-      // iterate req.body
-        // forEach key qString += 'key=value&'
-      // if last char in qStr === & then remove
       for (let key in req.body) qString += `${key}=req.body[${key}]&`
       if (qString[-1] === "&") qString = qString.slice(0, -1)
+
       const resp = await axios.get(`${BASE_URL}/api.php?${qString}`);
+      readResponseCode(resp.response_code)
       const questions = resp.results;
       return res.json({ questions })
     } catch (err) {
       return next(err)}
   })
-
-
-// Get Questions from random categories
-router.get(`${BASE_URL}/api_token.php?amount=50`,
-  async function (req, res, next) {
-    try {
-
-    } catch (err) {
-      return next(err)}
-            })
