@@ -4,7 +4,7 @@
 
 const express = require('express');
 
-const ExpressError = ('./helpers/ExpressError');
+// const ExpressError = ('./helpers/ExpressError');
 
 const musicRoutes = require('./routes/music')
 const quotesRoutes = require('./routes/quotes')
@@ -27,18 +27,18 @@ app.use(morgan('tiny'));
 // app.use('/thesaurus', thesaurusRoutes);
 app.use('/trivia', triviaRoutes);
 
-/** 404 handler */
-app.use(function (req, res, next) {
-  const err = new ExpressError("Not Found", 404);
-  // pass the error to the next piece of middleware
-  return next(err);
-});
+// /** 404 handler */
+// app.use(function (req, res, next) {
+//   const err = new ExpressError("Not Found", 404);
+//   // pass the error to the next piece of middleware
+//   return next(err);
+// });
 
 /** general error handler */
 
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  console.error(err.stack);
+  if (process.env.NODE_ENV != "test") console.error(err.stack);
 
   return res.json({
     status: err.status,
