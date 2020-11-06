@@ -1,3 +1,6 @@
+We've all been couped up for months this year thanks to COVID-19.
+One of the things I miss is going to pub quiz nights. SO I'm working on the backend of a pub quiz app.
+
 
 Designing API around being able to run a game like this:
 
