@@ -69,7 +69,6 @@ router.get('/categories',
   async function (req, res, next) {
     try {
       const resp = await axios.get(`${BASE_URL}/api_category.php`);
-      console.log('*****\n\n Value of resp in /categories', resp, '\n\n *****')
       const categories = resp.data.trivia_categories;
       return res.json({ categories });
     } catch (err) {
